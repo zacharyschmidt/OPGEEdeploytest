@@ -1,0 +1,14 @@
+build:
+  docker:
+    web: Dockerfile
+    worker: Dockerfile
+run:
+  web: sh heroku.sh
+    #gunicorn "project.server:create_app()"
+    # python3 manage.py run -h 0.0.0.0
+  #worker: python3 manage.py run_worker
+
+
+ 
+
+

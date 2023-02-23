@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../opgee/etc/opgee.xsd">
+
+	<Analysis name="test_boundary">
+		<A name="functional_unit">gas</A>
+	  <A name="GWP_horizon">100</A>
+	  <A name="GWP_version">AR5</A>
+		<A name="boundary">Distribution</A>
+		<Field name="test_gas_transmission_boundary"/>
+	</Analysis>
+
+    <Field name="test_gas_transmission_boundary">
+
+		<Process class="TransmissionCompressor"/>
+		<Process class="StorageCompressor"/>
+		<Process class="GasDistribution"/>
+		<Process class="LNGLiquefaction"/>
+		<Process class="LNGRegasification"/>
+		<Process class="LNGTransport"/>
+		<Process class="StorageWell"/>
+		<Process class="StorageSeparator"/>
+		<Process class="PostStorageCompressor"/>
+		<Process class="Before"/>
+		<Process class="After"/>
+
+		<Process class="Boundary" boundary="Distribution"/>
+
+		<Stream src="Before" dst="TransmissionCompressor" name="before to transmission compressor">
+			<Component name="N2" phase="gas">25.7</Component>
+			<Component name="CO2" phase="gas">0.2</Component>
+			<Component name="C1" phase="gas">435.0</Component>
+			<Component name="C2" phase="gas">51.3</Component>
+			<Component name="C3" phase="gas">5.3</Component>
+			<Component name="C4" phase="gas">1.4</Component>
+			<A name="temperature">90.0</A>
+			<A name="pressure">500.0</A>
+			<Contains>gas for transmission</Contains>
+		</Stream>
+
+		<Stream src="TransmissionCompressor" dst="StorageCompressor" name="transmission compressor to storage compressor">
+			<Contains>gas for storage</Contains>
+		</Stream>
+
+		<Stream src="TransmissionCompressor" dst="LNGLiquefaction" name="transmission compressor to LNG liquefaction">
+			<Contains>LNG</Contains>
+		</Stream>
+
+		<Stream src="TransmissionCompressor" dst="GasDistribution" name="transmission compressor to gas distribution">
+			<Contains>gas for distribution</Contains>
+		</Stream>
+
+		<Stream src="StorageCompressor" dst="StorageWell" name="storage compressor to storage well">
+			<Contains>gas for well</Contains>
+		</Stream>
+
+
+		<Stream src="StorageWell" dst="StorageSeparator" name="storage well to storage separator">
+			<Contains>gas for separator</Contains>
+		</Stream>
+
+
+		<Stream src="StorageSeparator" dst="PostStorageCompressor" name="storage separator to post storage compressor">
+			<Contains>gas for storage</Contains>
+		</Stream>
+
+		<Stream src="PostStorageCompressor" dst="GasDistribution" name="post storage compressor to gas distribution">
+			<Contains>gas for distribution</Contains>
+		</Stream>
+
+
+		<Stream src="LNGLiquefaction" dst="LNGTransport" name="LNG liquefaction to LNG transportation">
+			<Contains>gas for transport</Contains>
+		</Stream>
+
+		<Stream src="LNGTransport" dst="LNGRegasification" name="LNG transportation to LNG regasification">
+			<Contains>gas</Contains>
+		</Stream>
+
+		<Stream src="LNGRegasification" dst="GasDistribution" name="LNG transportation to gas distribution">
+			<Contains>gas for distribution</Contains>
+		</Stream>
+
+		<Stream src="GasDistribution" dst="DistributionBoundary" name="gas distribution to customer">
+			<Contains>gas</Contains>
+		</Stream>
+
+    </Field>
+
+</Model>

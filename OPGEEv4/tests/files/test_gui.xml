@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../opgee/etc/opgee.xsd">
+
+	<Analysis name="test_separator">
+		<A name="functional_unit">oil</A>
+	  <A name="GWP_horizon">100</A>
+	  <A name="GWP_version">AR5</A>
+		<Field name="test"/>
+	</Analysis>
+
+	<Analysis name="test_20_year">
+		<A name="functional_unit">oil</A>
+	  <A name="GWP_horizon">20</A>
+	  <A name="GWP_version">AR5_CCF</A>
+		<Field name="test"/>
+		<Field name="test2"/>
+	</Analysis>
+
+	<Field name="test">
+		<A name="country">USA</A>
+
+		<Aggregator name="Production_and_extraction">
+		  <Process class="Separation" impute-start="true"/>
+		  <Process class="ReservoirWellInterface" cycle-start="true"/>
+
+		  <Process class="DownholePump"/>
+		  <Process class="After" desc="Test process 2"/>
+		</Aggregator>
+
+		<Aggregator name="Surface_processing">
+			<Process class="CrudeOilDewatering"/>
+			<Process class="ProducedWaterTreatment"/>
+			<Process class="CrudeOilStabilization" enabled="false"/>
+			<Process class="HeavyOilUpgrading" enabled="false"/>
+			<Process class="HeavyOilDilution" enabled="false"/>
+			<Process class="CrudeOilStorage" enabled="false"/>
+		</Aggregator>
+
+		<Process class="Output"/>
+
+		<Stream src="CrudeOilDewatering" dst="ProducedWaterTreatment">
+			<Contains>crude oil</Contains>
+			<Contains>water</Contains>
+		</Stream>
+
+		<Stream src="CrudeOilDewatering" dst="Output" name="stabilization">
+			<Contains>oil for stabilization</Contains>
+		</Stream>
+
+<!--		<Stream src="CrudeOilDewatering" dst="Output" name="upgrader">-->
+<!--			<Contains>oil for upgrader</Contains>-->
+<!--		</Stream>-->
+
+<!--		<Stream src="CrudeOilDewatering" dst="Output" name="dilution">-->
+<!--			<Contains>oil for dilution</Contains>-->
+<!--		</Stream>-->
+
+<!-- -->
+
+		<Stream	src="After" dst="Output">
+			<Contains>crude oil</Contains>
+		</Stream>
+
+		<Stream src="Separation" dst="CrudeOilDewatering" name="separator to crude oil dewatering">
+			<Contains>crude oil</Contains>
+		</Stream>
+
+		<Stream src="Separation" dst="ProducedWaterTreatment" name="separator to produced water treatment">
+			<Contains>water</Contains>
+		</Stream>
+
+		<Stream src="ProducedWaterTreatment" dst="After" name="produced water treatment to steam">
+			<Contains>water for steam</Contains>
+		</Stream>
+
+		<Stream src="ProducedWaterTreatment" dst="After" name="produced water treatment to reinjection">
+			<Contains>water for reinjection</Contains>
+		</Stream>
+
+		<Stream src="ProducedWaterTreatment" dst="After" name="produced water treatment to surface disposal">
+			<Contains>water for surface disposal</Contains>
+		</Stream>
+
+		<Stream src="ProducedWaterTreatment" dst="After" name="produced water treatment to subsurface disposal">
+			<Contains>water for subsurface disposal</Contains>
+		</Stream>
+
+		<Stream src="Separation" dst="After" name="gas after separator">
+			<Contains>gas</Contains>
+		</Stream>
+
+		<Stream src="ReservoirWellInterface" dst="DownholePump" name="reservoir well interface to downhole pump">
+			<Contains>crude oil</Contains>
+		</Stream>
+
+		<Stream src="Reservoir" dst="ReservoirWellInterface" name="reservoir to reservoir well interface">
+			<Contains>crude oil</Contains>
+		</Stream>
+
+		<Stream src="DownholePump" dst="Separation" name="downhole pump to separator">
+			<Contains>crude oil</Contains>
+		</Stream>
+
+		<Stream src="After" dst="DownholePump" name="lifting gas" impute="False">
+			<Contains>lifting gas</Contains>
+		</Stream>
+
+		<Stream src="After" dst="ReservoirWellInterface" name="flooding CO2" impute="False">
+			<Contains>CO2</Contains>
+		</Stream>
+
+		<Stream src="After" dst="ProducedWaterTreatment" name="blowdown recycled to treatment" impute="False">
+			<Contains>water</Contains>
+		</Stream>
+	</Field>
+
+	<Field name="test2">
+		<A name="country">Canada</A>
+
+		<Aggregator name="Production_and_extraction">
+			<Process class="ReservoirWellInterface"/>
+			<Process class="DownholePump"/>
+			<Process class="Separation"/>
+		</Aggregator>
+
+		<Aggregator name="Surface_processing">
+			<Process class="CrudeOilDewatering"/>
+			<Process class="ProducedWaterTreatment"/>
+			<Process class="CrudeOilStabilization" enabled="false"/>
+			<Process class="HeavyOilUpgrading" enabled="false"/>
+			<Process class="HeavyOilDilution" enabled="false"/>
+			<Process class="CrudeOilStorage" enabled="false"/>
+		</Aggregator>
+
+		<Aggregator name="EverythingElse">
+			<Process class="After"/>
+		</Aggregator>
+
+		<Stream src="Reservoir" dst="ReservoirWellInterface">
+			<Contains>crude oil</Contains>
+		</Stream>
+
+		<Stream src="ReservoirWellInterface" dst="DownholePump">
+			<Contains>crude oil</Contains>
+		</Stream>
+
+		<Stream src="DownholePump" dst="Separation">
+			<Contains>crude oil</Contains>
+		</Stream>
+
+		<Stream src="Separation" dst="ProducedWaterTreatment">
+			<Contains>water</Contains>
+		</Stream>
+
+		<Stream src="ProducedWaterTreatment" dst="After" name="produced water treatment to steam">
+			<Contains>water for steam</Contains>
+		</Stream>
+
+		<Stream src="ProducedWaterTreatment" dst="After" name="produced water treatment to reinjection">
+			<Contains>water for reinjection</Contains>
+		</Stream>
+
+		<Stream src="ProducedWaterTreatment" dst="After" name="produced water treatment to surface disposal">
+			<Contains>water for surface disposal</Contains>
+		</Stream>
+
+		<Stream src="ProducedWaterTreatment" dst="After" name="produced water treatment to subsurface disposal">
+			<Contains>water for subsurface disposal</Contains>
+		</Stream>
+
+		<Stream src="Separation" dst="After" name="gas after separator">
+			<Contains>gas</Contains>
+		</Stream>
+
+		<Stream src="After" dst="Output">
+			<Contains>crude oil</Contains>
+		</Stream>
+
+	</Field>
+</Model>

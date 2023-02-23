@@ -1,0 +1,42 @@
+version: '2'
+services:
+  web:
+    build: .
+    image: web
+    expose:
+      - 5000
+    command: gunicorn --bind 0.0.0.0:5000 manage:app 
+    volumes:
+      - static_volume:/project/client/static
+    environment:
+      - FLASK_DEBUG=0
+      - APP_SETTINGS=project.server.config.DevelopmentConfig
+      - LC_ALL=C.UTF-8
+      - LANG=C.UTF-8
+    depends_on: 
+      - redis
+  worker: 
+    image: web
+    command: python3 manage.py run_worker
+    volumes_from: 
+      - web 
+      # - .:/user/src/app
+    environment:
+      - APP_SETTINGS=project.server.config.DevelopmentConfig
+      - LC_ALL=C.UTF-8
+      - LANG=C.UTF-8
+    depends_on:
+      - redis
+  redis:
+    image: redis:6-alpine
+  # nginx servicer is like 'client in the dataexchange web app'
+  nginx:
+    build: ./nginx
+    volumes:
+      - static_volume:/project/client/static
+    ports:
+      - 1337:80
+    depends_on:
+      - web
+volumes:
+  static_volume:

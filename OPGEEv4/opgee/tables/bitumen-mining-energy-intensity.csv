@@ -1,0 +1,6 @@
+Fuel type,Integrated with diluent,Integrated with upgrader,Units
+Diesel fuel use,0.52000,0.46000,gal/bbl_oil
+Natural gas use,415.00000,304.00000,scf/bbl_oil
+Electricity use,19.87341,17.96556,kWh/bbl_oil
+Electricity gen.,12.24202,18.12455,kWh/bbl_oil
+Net electricity imported,7.63139,-0.15899,kWh/bbl_oil

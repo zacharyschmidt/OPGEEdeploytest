@@ -1,0 +1,14 @@
+
+Flask-Login
+Pandas
+Flask==1.1.2
+Flask-Bootstrap==3.3.7.1
+Flask-Testing==0.8.1
+Flask-WTF==0.14.3
+redis==3.5.3
+rq==1.7.0
+gunicorn
+jinja2<3.1.0
+itsdangerous==2.0.1
+werkzeug==2.0.3
+#opgee @ git+https://github.com/Stanford-EAO/OPGEEv4@07fdca83cbbcc9f0aa22bb6dc8d50ce1e02559e5

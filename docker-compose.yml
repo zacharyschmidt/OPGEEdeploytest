@@ -1,0 +1,33 @@
+version: '2'
+services:
+  web:
+    build: .
+    image: web
+    ports:
+      - "5004:5000"
+    command: python3 manage.py run -h 0.0.0.0
+    volumes:
+      - .:/usr/src/app 
+    environment:
+      - FLASK_DEBUG=1
+      - APP_SETTINGS=project.server.config.DevelopmentConfig
+      - LC_ALL=C.UTF-8
+      - LANG=C.UTF-8
+    depends_on: 
+      - redis
+  worker: 
+    image: web
+    command: python3 manage.py run_worker
+    volumes_from: 
+      - web 
+      # - .:/user/src/app
+    environment:
+      - APP_SETTINGS=project.server.config.DevelopmentConfig
+      - LC_ALL=C.UTF-8
+      - LANG=C.UTF-8
+    depends_on:
+      - redis
+    
+
+  redis:
+    image: redis:6-alpine
